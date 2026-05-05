@@ -1,0 +1,16 @@
+[
+    {
+        "modid": "shrunkgateway",
+        "name": "Shrunk Gateway",
+        "description": "An addon mod for Astral Sorcery",
+        "version": "${version}",
+        "mcversion": "1.12.2",
+        "url": "",
+        "updateUrl": "",
+        "authorList": ["YourName"],
+        "credits": "Created with love for Astral Sorcery",
+        "logoFile": "",
+        "screenshots": [],
+        "dependencies": ["astralsorcery"]
+    }
+]

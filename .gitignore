@@ -1,0 +1,38 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# Eclipse
+.settings/
+.classpath
+.project
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# Minecraft
+run/
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Package files
+*.nar
+*.zip
+*.tar.gz
+*.rar
