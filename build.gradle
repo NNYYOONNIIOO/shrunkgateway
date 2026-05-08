@@ -19,7 +19,7 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven-publish'
 apply plugin: "java"
 
-version = "1.12.2-1.0.0"
+version = "1.12.2-1.1.0"
 group = "nyonio"
 archivesBaseName = "shrunkgateway"
 
@@ -36,6 +36,13 @@ minecraft {
     runDir = "run"
     useDepAts = true
     mappings = "snapshot_20180415"
+    
+    def args = [
+        '-Dfml.coreMods.load=nyonio.common.core.ShrunkGatewayMixinLoader',
+        '--mixin', 'mixins.shrunkgateway.json'
+    ]
+    clientJvmArgs.addAll(args)
+    serverJvmArgs.addAll(args)
 }
 
 repositories {
@@ -57,6 +64,7 @@ dependencies {
     deobfCompile "curse.maven:astral-sorcery-241721:3044416"
     deobfCompile "mezz.jei:jei_1.12.2:4.8.5.151"
     deobfCompile "com.azanor.baubles:Baubles:1.12-1.5.2"
+    deobfCompile "curse.maven:mixin-booter-419286:7049694"
 }
 
 tasks.withType(JavaCompile) {
@@ -66,6 +74,20 @@ tasks.withType(JavaCompile) {
 jar {
     manifest {
         attributes 'FMLAT': 'shrunkgateway_at.cfg'
+        attributes 'FMLCorePlugin': 'nyonio.common.core.ShrunkGatewayMixinLoader'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'ForceLoadAsMod': 'true'
+        attributes 'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker'
+        attributes 'TweakOrder': '0'
+        attributes 'MixinConfigs': 'mixins.shrunkgateway.json'
+    }
+    
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it).matching {
+                include 'mixins.shrunkgateway.refmap.json'
+            }
+        }
     }
 }
 

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    " S ",
+    " P "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "shrunkgateway:resonant_starwheel"
+    },
+    "P": {
+      "item": "shrunkgateway:private_gateway"
+    }
+  },
+  "result": {
+    "item": "shrunkgateway:shrunkgateway",
+    "count": 1
+  }
+}

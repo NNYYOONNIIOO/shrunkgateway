@@ -1,7 +1,10 @@
 package nyonio.client;
 
 import nyonio.ShrunkGateway;
+import nyonio.client.event.ClientPrivateGatewayHandler;
+import nyonio.client.event.ClientResonanceGatewayHandler;
 import nyonio.client.event.ClientShrunkGatewayHandler;
+import nyonio.client.event.PrivateGatewayClientInjector;
 import nyonio.common.registry.RegistryItems;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -19,6 +22,7 @@ public class ClientRegistry {
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         registerItemModel(RegistryItems.shrunkGateway);
+        registerItemModel(RegistryItems.resonantStarwheel);
     }
 
     private static void registerItemModel(Item item) {
@@ -28,5 +32,8 @@ public class ClientRegistry {
 
     public static void preInit(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new ClientShrunkGatewayHandler());
+        MinecraftForge.EVENT_BUS.register(new ClientPrivateGatewayHandler());
+        MinecraftForge.EVENT_BUS.register(new PrivateGatewayClientInjector());
+        MinecraftForge.EVENT_BUS.register(new ClientResonanceGatewayHandler());
     }
 }

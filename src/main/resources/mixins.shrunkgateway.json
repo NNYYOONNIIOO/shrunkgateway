@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "nyonio.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MixinPktRequestTeleport",
+    "MixinCelestialGatewaySystem",
+    "MixinTileCelestialGateway"
+  ],
+  "client": [
+    "MixinCelestialGatewaySystem"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

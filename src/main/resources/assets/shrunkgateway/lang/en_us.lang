@@ -1,1 +1,38 @@
-item.shrunkgateway.shrunkgateway.name=Shrunk Gateway
+item.shrunkgateway.shrunkgateway.name=Shrunk Celestial Gateway
+item.shrunkgateway.resonant_starwheel.name=Constellation Sand
+tile.shrunkgateway.private_gateway.name=Private Celestial Gateway
+tile.shrunkgateway.resonance_gateway.name=Resonance Celestial Gateway
+
+tooltip.shrunkgateway.shrunkgateway=§8Using the resonance of stardust, compresses the coordinates of designated gateways into the mirror.
+tooltip.shrunkgateway.private_gateway=§8Starlight binds to the master of this gate, only they and their trusted ones may open it.
+tooltip.shrunkgateway.resonance_gateway=§8Only through resonance can gateways connect. Use the Constellation Sand to carve star trails and forge harmonic bonds.
+tooltip.shrunkgateway.constellation_hub.paired=§6Paired Constellation Sand
+tooltip.shrunkgateway.constellation_hub.unpaired=§7Unpaired Constellation Sand
+
+message.shrunkgateway.constellation_hub.not_paired=§cThis Constellation Sand is not paired!
+message.shrunkgateway.constellation_hub.not_gateway=§cThis block is not a Resonance Celestial Gateway!
+message.shrunkgateway.constellation_hub.already_bound=§cThis Constellation Sand is already bound to a gateway!
+message.shrunkgateway.constellation_hub.bound_success=§aSuccessfully bound Constellation Sand to gateway!
+message.shrunkgateway.constellation_hub.bound_first=§aSuccessfully bound Constellation Sand to gateway!
+message.shrunkgateway.constellation_hub.already_linked=§eThis gateway is already linked with the same Constellation Sand!
+message.shrunkgateway.constellation_hub.conflict=§cThis gateway is already linked with a different Constellation Sand!
+message.shrunkgateway.teleport.not_bound=§cThis gateway is not bound to Constellation Sand!
+message.shrunkgateway.teleport.no_paired_gateway=§cNo paired gateway found!
+
+message.shrunkgateway.binding.not_owner=Only the owner of this private gateway can authorize other players!
+message.shrunkgateway.binding.no_player=This scroll does not contain any player information!
+message.shrunkgateway.binding.self_binding=You cannot authorize yourself to your own gateway!
+message.shrunkgateway.binding.already_authorized=Player %s is already authorized to use this gateway!
+message.shrunkgateway.binding.success=Successfully authorized player %s to use this private gateway!
+message.shrunkgateway.binding.failed=Authorization failed!
+
+message.shrunkgateway.link.cross_dimension=§cCannot bind resonance gateways across dimensions!
+message.shrunkgateway.link.success=§aSuccessfully bound resonance gateways!
+message.shrunkgateway.link.unlink=§aSuccessfully unbound resonance gateways!
+message.shrunkgateway.teleport.cooldown=§cTarget gateway is on cooldown!
+message.shrunkgateway.teleport.not_bound=§cThis resonance gateway is not bound to a target!
+message.shrunkgateway.teleport.structure_incomplete=§cCurrent gateway's multiblock structure is incomplete!
+message.shrunkgateway.teleport.no_sky=§cCurrent gateway cannot see the sky!
+message.shrunkgateway.teleport.target_invalid=§cTarget location is not a valid resonance gateway!
+message.shrunkgateway.teleport.target_structure_incomplete=§cTarget gateway's multiblock structure is incomplete!
+message.shrunkgateway.teleport.target_no_sky=§cTarget gateway cannot see the sky!
