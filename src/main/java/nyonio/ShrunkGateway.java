@@ -3,6 +3,8 @@ package nyonio;
 import nyonio.client.ClientProxy;
 import nyonio.common.CommonProxy;
 import nyonio.common.network.PacketHandler;
+import nyonio.common.registry.RegistryEntities;
+import nyonio.common.registry.RegistryStructures;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -15,7 +17,7 @@ public class ShrunkGateway
 {
     public static final String MODID = "shrunkgateway";
     public static final String NAME = "Shrunk Gateway";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
     public static final String DEPENDENCIES = "required-after:astralsorcery";
 
     @SidedProxy(
@@ -27,20 +29,22 @@ public class ShrunkGateway
     @Mod.Instance(MODID)
     public static ShrunkGateway instance;
 
-    private static Logger logger;
+    public static Logger LOGGER;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        logger = event.getModLog();
+        LOGGER = event.getModLog();
         PacketHandler.init();
+        RegistryEntities.registerEntities();
         proxy.preInit(event);
-        logger.info("Shrunk Gateway preInit");
+        LOGGER.info("Shrunk Gateway preInit");
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        logger.info("Shrunk Gateway initialized");
+        RegistryStructures.init(event);
+        LOGGER.info("Shrunk Gateway initialized");
     }
 }

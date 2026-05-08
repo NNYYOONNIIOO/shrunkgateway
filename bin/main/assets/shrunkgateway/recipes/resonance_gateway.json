@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "SGS",
+    "   "
+  ],
+  "key": {
+    "S": {
+      "item": "astralsorcery:itemcraftingcomponent",
+      "data": 4
+    },
+    "G": {
+      "item": "astralsorcery:blockcelestialgateway"
+    }
+  },
+  "result": {
+    "item": "shrunkgateway:resonance_gateway",
+    "count": 1
+  }
+}

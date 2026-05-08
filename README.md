@@ -1,4 +1,4 @@
-# 微缩天体星门 (Shrunk Gateway)
+# 微缩天辉星门 (Shrunk Gateway)
 
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -6,7 +6,7 @@
 
 ## 功能介绍
 
-手持"微缩天体星门"物品时，可以使用天体星门的传送功能，无需建造多方块结构。
+手持"微缩天辉星门"物品时，可以使用天辉星门的传送功能，无需建造多方块结构。
 
 ### 特性
 

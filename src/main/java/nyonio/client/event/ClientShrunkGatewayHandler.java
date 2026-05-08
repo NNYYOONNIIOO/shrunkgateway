@@ -2,13 +2,17 @@ package nyonio.client.event;
 
 import nyonio.common.network.PacketHandler;
 import nyonio.common.network.PktShrunkGatewayTeleport;
+import nyonio.common.network.PktSyncPrivateGateways;
 import nyonio.common.registry.RegistryItems;
 import hellfirepvp.astralsorcery.client.effect.EffectHandler;
 import hellfirepvp.astralsorcery.client.effect.EffectHelper;
 import hellfirepvp.astralsorcery.client.effect.fx.EntityFXFacingParticle;
 import hellfirepvp.astralsorcery.client.util.UIGateway;
+import hellfirepvp.astralsorcery.common.data.world.data.GatewayCache;
 import hellfirepvp.astralsorcery.common.util.MiscUtils;
 import hellfirepvp.astralsorcery.common.util.data.Vector3;
+import nyonio.common.data.PrivateGatewayDataManager;
+import nyonio.common.network.PrivateGatewayCache;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,6 +25,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class ClientShrunkGatewayHandler {
@@ -53,6 +60,9 @@ public class ClientShrunkGatewayHandler {
             
             UIGateway ui = EffectHandler.getInstance().getUiGateway();
             if(ui != null) {
+                // 添加私人天辉星门到 UIGateway
+                addPrivateGatewaysToUI(ui, player, 5.5);
+                
                 handleGatewayInteraction(player, ui);
             }
         } else {
@@ -116,7 +126,7 @@ public class ClientShrunkGatewayHandler {
 
             if(focusTicks > 95) {
                 player.setSneaking(false);
-                PacketHandler.CHANNEL.sendToServer(new PktShrunkGatewayTeleport(focusingEntry.originalDimId, focusingEntry.originalBlockPos));
+                PacketHandler.INSTANCE.sendToServer(new PktShrunkGatewayTeleport(focusingEntry.originalDimId, focusingEntry.originalBlockPos));
                 focusTicks = 0;
                 focusingEntry = null;
             }
@@ -155,5 +165,73 @@ public class ClientShrunkGatewayHandler {
     private void resetState() {
         focusingEntry = null;
         focusTicks = 0;
+    }
+    
+    private void addPrivateGatewaysToUI(UIGateway ui, EntityPlayer player, double sphereRadius) {
+        if(PrivateGatewayCache.instance == null) return;
+        
+        Map<Integer, List<PktSyncPrivateGateways.PrivateGatewayNode>> privateGateways = 
+            PrivateGatewayCache.instance.getGatewayCache(Side.CLIENT);
+        
+        if(privateGateways == null) return;
+        
+        Vector3 gatePosition = ui.getPos();
+        int dimId = player.world.provider.getDimension();
+        
+        // 使用反射获取 gatewayEntries
+        List<UIGateway.GatewayEntry> gatewayEntries = null;
+        try {
+            Field field = UIGateway.class.getDeclaredField("gatewayEntries");
+            field.setAccessible(true);
+            gatewayEntries = (List<UIGateway.GatewayEntry>) field.get(ui);
+        } catch (Exception e) {
+            return;
+        }
+        
+        if(gatewayEntries == null) return;
+        
+        for(Map.Entry<Integer, List<PktSyncPrivateGateways.PrivateGatewayNode>> entry : privateGateways.entrySet()) {
+            int nodeDim = entry.getKey();
+            
+            for(PktSyncPrivateGateways.PrivateGatewayNode node : entry.getValue()) {
+                Vector3 otherPos = new Vector3(node.pos);
+                
+                // 跳过太近的星门（同维度且距离小于16）
+                if(nodeDim == dimId && otherPos.distance(gatePosition) < 16) continue;
+                
+                Vector3 direction = otherPos.subtract(gatePosition).normalize().multiply(sphereRadius);
+                
+                UIGateway.GatewayEntry gatewayEntry = null;
+                try {
+                    java.lang.reflect.Constructor<UIGateway.GatewayEntry> constructor = 
+                        UIGateway.GatewayEntry.class.getDeclaredConstructor(
+                            GatewayCache.GatewayNode.class, int.class, Vector3.class
+                        );
+                    constructor.setAccessible(true);
+                    gatewayEntry = constructor.newInstance(
+                        new GatewayCache.GatewayNode(node.pos, node.display),
+                        nodeDim,
+                        direction
+                    );
+                } catch (Exception e) {
+                    continue;
+                }
+                
+                if(gatewayEntry == null) continue;
+                
+                // 检查是否已经有相同位置的条目
+                boolean exists = false;
+                for(UIGateway.GatewayEntry existing : gatewayEntries) {
+                    if(existing.originalBlockPos.equals(node.pos)) {
+                        exists = true;
+                        break;
+                    }
+                }
+                
+                if(!exists) {
+                    gatewayEntries.add(gatewayEntry);
+                }
+            }
+        }
     }
 }

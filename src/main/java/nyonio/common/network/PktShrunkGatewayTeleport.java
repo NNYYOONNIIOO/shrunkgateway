@@ -12,6 +12,10 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import nyonio.ShrunkGateway;
+import nyonio.common.data.PrivateGatewayDataManager;
+
+import java.util.List;
 
 public class PktShrunkGatewayTeleport implements IMessage, IMessageHandler<PktShrunkGatewayTeleport, IMessage> {
 
@@ -48,7 +52,29 @@ public class PktShrunkGatewayTeleport implements IMessage, IMessageHandler<PktSh
                 World targetWorld = server.getWorld(message.dimId);
                 if (targetWorld != null) {
                     GatewayCache gatewayCache = WorldCacheManager.getOrLoadData(targetWorld, WorldCacheManager.SaveKey.GATEWAY_DATA);
-                    if (MiscUtils.contains(gatewayCache.getGatewayPositions(), node -> node.equals(message.pos))) {
+                    
+                    boolean canTeleport = MiscUtils.contains(gatewayCache.getGatewayPositions(), node -> node.equals(message.pos));
+                    
+                    if (!canTeleport) {
+                        PrivateGatewayDataManager.PrivateGatewayWorldData privateData = 
+                            PrivateGatewayDataManager.getOrCreate(targetWorld);
+                        
+                        List<PrivateGatewayDataManager.PrivateGatewayNode> playerGateways = 
+                            privateData.getGatewaysForOwner(player.getUniqueID());
+                        
+                        canTeleport = playerGateways.stream()
+                            .anyMatch(node -> node.equals(message.pos));
+                        
+                        if (!canTeleport) {
+                            List<PrivateGatewayDataManager.PrivateGatewayNode> authorizedGateways = 
+                                privateData.getGatewaysForAuthorizedPlayer(player.getUniqueID());
+                            
+                            canTeleport = authorizedGateways.stream()
+                                .anyMatch(node -> node.equals(message.pos));
+                        }
+                    }
+                    
+                    if (canTeleport) {
                         MiscUtils.transferEntityTo(player, message.dimId, message.pos);
                     }
                 }

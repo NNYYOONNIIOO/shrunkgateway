@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "SCS",
+    "CGC"
+  ],
+  "key": {
+    "S": {
+      "item": "astralsorcery:itemcraftingcomponent",
+      "data": 2
+    },
+    "C": {
+      "item": "astralsorcery:itemcraftingcomponent",
+      "data": 3
+    },
+    "G": {
+      "item": "astralsorcery:blockcelestialgateway"
+    }
+  },
+  "result": {
+    "item": "shrunkgateway:private_gateway",
+    "count": 1
+  }
+}
